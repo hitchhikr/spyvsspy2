@@ -1387,9 +1387,9 @@ FADE_MASKING_TABLE: dc.w     %1000000000000000
                     dc.w     %0000000000000100
                     dc.w     %0000100000000000
                     dc.w     %0000000000100000
-TIT_NAME:           dc.b     'tit.pi1',0
-JET_NAME:           dc.b     'jet.pi1',0
-CRED_NAME:          dc.b     'obj.pi1',0
+TIT_NAME:           dc.b     'gfx/tit.pi1',0
+JET_NAME:           dc.b     'gfx/jet.pi1',0
+CRED_NAME:          dc.b     'gfx/obj.pi1',0
 DOS_NAME:           dc.b     'dos.library',0
                     even
 DOS_BASE:           dc.l     0

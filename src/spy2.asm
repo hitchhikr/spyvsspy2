@@ -2289,13 +2289,13 @@ WHICH4:             dc.b     0,0,0,$C4,4,2,3,3,3,0,12,$1E,$18,3,3,1,1,12,12,8,8,
 WHICH5:             dc.b     0,0,1,$19,$59,2,8,8,8,2,$10,$14,$14,3,3,0,0,$10,$10,6,6,8,1,0
 WHICH6:             dc.b     0,0,1,$19,$59,2,8,8,8,2,$14,14,$14,3,3,0,0,$14,$14,4,4,2,2,0
 WHICH7:             dc.b     0,0,1,$19,$59,2,8,8,8,2,$14,14,$14,3,3,0,0,$14,$14,2,2,7,2,0
-SPYPIX:             dc.b     "spy1x.pi1",0
-SPYPIX2:            dc.b     "spy2x.pi1",0
-BACKPIX:            dc.b     "back.pi1",0
-LANDPIX:            dc.b     "land.pi1",0
-MAPPIX:             dc.b     "maps.pi1",0
-LANDPIX2:           dc.b     "land2.pi1",0
-SPY2PICA:           dc.b     "spy2pica.pi1",0
+SPYPIX:             dc.b     "gfx/spy1x.pi1",0
+SPYPIX2:            dc.b     "gfx/spy2x.pi1",0
+BACKPIX:            dc.b     "gfx/back.pi1",0
+LANDPIX:            dc.b     "gfx/land.pi1",0
+MAPPIX:             dc.b     "gfx/maps.pi1",0
+LANDPIX2:           dc.b     "gfx/land2.pi1",0
+SPY2PICA:           dc.b     "gfx/spy2pica.pi1",0
                     even
 MY_VERY_OWN_STACK:  dc.l     0
 XSTICK1:            dc.w     0
