@@ -1,8 +1,6 @@
 ; -------------------------------------------
-; Spy VS Spy II - The Island Caper Amiga
-; Disassembled by Franck "hitchhikr" Charlet
-; -------------------------------------------
-
+; "Spy VS Spy II - The Island Caper" Amiga.
+; Disassembled by Franck "hitchhikr" Charlet.
 ; -------------------------------------------
 
                     mc68000
@@ -12,6 +10,7 @@
 ; -------------------------------------------
 
 _LVOAllocMem        equ      -198
+_LVOFreeMem         equ      -210
 _LVOOpenLibrary     equ      -552
 
 _LVOOpen            equ      -30
@@ -907,7 +906,7 @@ MOVE_THE_JETS:      move.l   SCREEN1,a0
                     move.w   #-64,XSPOT
                     clr.w    OLDX1
                     clr.w    OLDX2
-lbC001282:          move.w   XSPOT,d0
+.LOOP:              move.w   XSPOT,d0
                     move.w   #25,d1
                     move.w   OLDX2,RESTORE_X
                     suba.l   a5,a5
@@ -918,12 +917,12 @@ lbC001282:          move.w   XSPOT,d0
                     addq.w   #1,PLANESPOT
                     move.w   PLANESPOT,d0
                     and.w    #7,d0
-                    bne      lbC0012D8
+                    bne      .SHOOT
                     move.w   XSPOT,d0
                     move.w   #25,d1
                     bsr      BLOW_A_HOLE
-lbC0012D8:          cmp.w    #322,XSPOT
-                    blt.w    lbC001282
+.SHOOT:             cmp.w    #322,XSPOT
+                    blt.w    .LOOP
 
 MOVE_OTHERJET:      clr.w    FRAME_JET
                     clr.w    HOLEINDEX
@@ -932,7 +931,7 @@ MOVE_OTHERJET:      clr.w    FRAME_JET
                     clr.w    OLDX1
                     clr.w    OLDX2
                     move.l   #(112*40),a5
-lbC001310:          move.w   XSPOT,d0
+.LOOP:              move.w   XSPOT,d0
                     move.w   #75,d1
                     move.w   OLDX1,RESTORE_X
                     move.l   #$B000,RASTER_VALUE
@@ -942,12 +941,12 @@ lbC001310:          move.w   XSPOT,d0
                     addq.w   #1,PLANESPOT
                     move.w   PLANESPOT,d0
                     and.w    #7,d0
-                    bne      lbC001368
+                    bne      .SHOOT
                     move.w   XSPOT,d0
                     move.w   #80,d1
                     bsr      BLOW_A_HOLE
-lbC001368:          cmp.w    #322,XSPOT
-                    blt.w    lbC001310
+.SHOOT:             cmp.w    #322,XSPOT
+                    blt.w    .LOOP
                     bsr      EXPLODE
                     bra      DIVE
 
@@ -966,7 +965,7 @@ DO_RESTORE_OF_JET:  move.w   RESTORE_X,d0
                     add.w    d1,a1
                     add.w    d1,a2
                     move.w   #33-1,d4
-lbC0013AE:          move.l   (a1),(a2)
+.LOOP:              move.l   (a1),(a2)
                     move.l   (200*40)(a1),(200*40)(a2)
                     move.l   (200*2*40)(a1),(200*2*40)(a2)
                     move.l   (200*3*40)(a1),(200*3*40)(a2)
@@ -980,7 +979,7 @@ lbC0013AE:          move.l   (a1),(a2)
                     move.l   (200*3*40+8)(a1),(200*3*40+8)(a2)
                     lea      40(a2),a2
                     lea      40(a1),a1
-                    dbra     d4,lbC0013AE
+                    dbra     d4,.LOOP
                     rts
 
 SHOW_JET:           movem.l  d0-d2,-(sp)
@@ -1293,7 +1292,7 @@ WHOS_REMOVED_THE_RAM_CHIPS:
 
 LOSE32K:            move.l   4.w,a6
                     move.l   #32768,d0
-                    jmp      -210(a6)
+                    jmp      _LVOFreeMem(a6)
 
 DECO_PIC:           move.l   d2,-(sp)
                     move.l   LOADSCREEN,d2
@@ -1305,7 +1304,7 @@ DECO:               move.l   LOADSCREEN,a0
                     move.w   #16-1,d0
 DECO_PAL:           move.w   (a0)+,(a1)+
                     dbra     d0,DECO_PAL
-                    add.w    #92,a1
+                    lea      92(a1),a1
                     move.w   #4-1,d0
 DECO_THREE:         move.l   a1,a2
                     move.w   #(200*40),d1
@@ -1317,7 +1316,9 @@ DECO_LOOP:          move.b   (a0)+,d2
                     bne      NOT_CD_DECO
                     move.b   #$CD,d2
                     bra      DECO_ORD
+
 NOT_CD_DECO:        bra      DECO_REP
+
 DECO_ORD:           move.b   d2,(a1)
                     tst.w    FLAG
                     bne      ADD_LOTS
@@ -1326,23 +1327,26 @@ DECO_ORD:           move.b   d2,(a1)
                     subq.w   #1,d1
                     beq      DONE_DECO
                     bra      DECO_LOOP
+
 ADD_LOTS:           clr.w    FLAG
                     addq.w   #7,a1
                     subq.w   #1,d1
                     beq      DONE_DECO
                     bra      DECO_LOOP
+
 DECO_REP:           move.w   d2,d3
                     and.w    #$7F,d3
                     tst.b    d2
                     bmi      USE_FF
-                    move.w   #0,d2
+                    clr.w    d2
                     bra      DECO_LOTS
-USE_FF:             move.w   #$FFFF,d2
+
+USE_FF:             move.w   #-1,d2
 DECO_LOTS:          move.b   d2,(a1)
                     tst.w    FLAG
                     bne      ADD_LOTS2
                     addq.w   #1,FLAG
-                    add.w    #1,a1
+                    addq.w   #1,a1
                     subq.w   #1,d1
                     beq      DONE_DECO
                     subq.b   #1,d3

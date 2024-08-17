@@ -1,6 +1,6 @@
 ; -------------------------------------------
-; Spy VS Spy II - The Island Caper Amiga
-; Disassembled by Franck "hitchhikr" Charlet
+; "Spy VS Spy II - The Island Caper" Amiga.
+; Disassembled by Franck "hitchhikr" Charlet.
 ; -------------------------------------------
 
                     mc68000
@@ -320,12 +320,12 @@ CHECK_MOUSE:        move.w   d0,d2
                     neg.b    d0
                     cmp.b    #1,d0
                     bls.b    DOM_UD
-                    move.b   #$14,2(a0)
+                    move.b   #20,2(a0)
                     bra.b    DOM_UD
 
 DOM_RIGHT:          cmp.b    #1,d0
                     bls.b    DOM_UD
-                    move.b   #$14,3(a0)
+                    move.b   #20,3(a0)
 DOM_UD:             move.w   d2,d0
                     lsr.w    #8,d0
                     sub.b    (a0),d0
@@ -334,12 +334,12 @@ DOM_UD:             move.w   d2,d0
                     neg.b    d0
                     cmp.b    #1,d0
                     bls.b    DOM_RET
-                    move.b   #$14,4(a0)
+                    move.b   #20,4(a0)
                     bra.b    DOM_RET
 
 DOM_DOWN:           cmp.b    #1,d0
                     bls.b    DOM_RET
-                    move.b   #$14,5(a0)
+                    move.b   #20,5(a0)
 DOM_RET:            move.w   d2,(a0)
                     rts
 
@@ -552,8 +552,8 @@ WAVE_LENGTH:        dc.w     128/2,64/2,32/2,16/2,8/2,4/2,2/2
 E_HIGH_PING:        dc.w     1,32,0,5,0,1,32,-1,0,-1
 E_MEDIUM_PING:      dc.w     1,32,0,5,0,1,32,-1,0,-1
 E_LOW_PING:         dc.w     1,32,0,5,0,1,32,-1,0,-1
-E_MEDIUM_BEEP:      dc.w     1,64,0,$19,0,0,1,-64,0,-1
-E_BANG:             dc.w     1,64,0,$20,-2,0,-1
+E_MEDIUM_BEEP:      dc.w     1,64,0,25,0,0,1,-64,0,-1
+E_BANG:             dc.w     1,64,0,32,-2,0,-1
 E_BOOM:             dc.w     1,64,0,1,-1
                     dc.w     0,7,0,0,1,-1
                     dc.w     0,7,0,0,1,-1
@@ -717,7 +717,7 @@ START_SOUNDS:       move.w   #1,MASTER_ENABLE
                     lea      MUSINF_0,a6
                     clr.w    (a6)
                     clr.w    6(a6)
-                    move.w   #32,4(a5)
+                    move.w   #64/2,4(a5)
                     move.w   #$8001,8(a6)
                     move.l   #ENVELOPE1,10(a6)
                     move.l   10(a6),16(a6)
@@ -728,7 +728,7 @@ START_SOUNDS:       move.w   #1,MASTER_ENABLE
                     lea      MUSINF_1,a6
                     clr.w    (a6)
                     clr.w    6(a6)
-                    move.w   #32,4(a5)
+                    move.w   #64/2,4(a5)
                     move.w   #$8002,8(a6)
                     move.l   #ENVELOPE2,10(a6)
                     move.l   10(a6),16(a6)
@@ -739,7 +739,7 @@ START_SOUNDS:       move.w   #1,MASTER_ENABLE
                     lea      MUSINF_2,a6
                     clr.w    (a6)
                     clr.w    6(a6)
-                    move.w   #32,4(a5)
+                    move.w   #64/2,4(a5)
                     move.w   #$8004,8(a6)
                     move.l   #ENVELOPE3,10(a6)
                     move.l   10(a6),16(a6)
@@ -749,7 +749,7 @@ START_SOUNDS:       move.w   #1,MASTER_ENABLE
                     lea      $DFF0D0,a5
                     lea      MUSINF_3,a6
                     clr.w    (a6)
-                    move.w   #32,4(a5)
+                    move.w   #64/2,4(a5)
                     clr.w    6(a6)
                     move.w   #$8008,8(a6)
                     move.l   #ENVELOPE1,10(a6)
@@ -916,7 +916,7 @@ lbC00155C:          move.w   -(a0),d0
                     and.w    #$FF,d0
                     or.w     #$8000,(a0)
                     and.w    #$9FFF,(a0)
-                    move.l   a0,$16(a6)
+                    move.l   a0,22(a6)
                     add.w    d0,d0
                     add.w    d0,d0
                     lea      SOUND_ROUTINES,a0
@@ -1058,14 +1058,14 @@ SAME_STEP:          tst.w    (a6)
                     move.w   6(a6),d0
                     add.w    2(a6),d0
                     move.w   d0,6(a6)
-                    move.w   $14(a6),d0
+                    move.w   20(a6),d0
                     add.w    4(a6),d0
-                    move.w   d0,$14(a6)
+                    move.w   d0,20(a6)
                     bra.b    DO_VOLUME
 
-END_OF_ENVY:        cmp.w    #$FFFE,d0
+END_OF_ENVY:        cmp.w    #-2,d0
                     bne.b    lbC0017B4
-                    move.l   $16(a6),a1
+                    move.l   22(a6),a1
                     move.w   (a1),d0
                     btst     #14,d0
                     beq.b    lbC0017B0
@@ -1081,7 +1081,7 @@ lbC0017B0:          addq.w   #4,a0
 lbC0017B4:          tst.w    6(a6)
                     bne.b    lbC0017C2
                     and.w    #$7FFF,8(a6)
-lbC0017C2:          move.l   $16(a6),a0
+lbC0017C2:          move.l   22(a6),a0
                     move.w   (a0),d0
                     and.w    #$4000,d0
                     bne.b    ALLOW_AGAIN
@@ -1089,7 +1089,7 @@ lbC0017C2:          move.l   $16(a6),a0
                     bra.b    DO_VOLUME
 
 ALLOW_AGAIN:        and.w    #$3FF,(a0)
-DO_VOLUME:          move.w   $14(a6),6(a5)
+DO_VOLUME:          move.w   20(a6),6(a5)
                     move.w   6(a6),8(a5)
                     move.w   8(a6),$DFF096
                     rts
@@ -1116,7 +1116,7 @@ X8912:              lea      REGS,a4
                     move.l   (a0,d2.w),(a5)
                     add.w    d3,d3
                     lea      FREQS,a0
-ISITENV1:           cmp.b    #$10,8(a4)
+ISITENV1:           cmp.b    #16,8(a4)
                     beq      DO_ENVEL1
                     move.w   (a0,d3.w),6(a5)
                     move.w   (a0,d3.w),20(a6)
@@ -1157,7 +1157,7 @@ XDONE1:             lea      $DFF0B0,a5
                     and.w    #$12,d1
                     cmp.w    #$12,d1
                     beq      XDONE2
-                    and.w    #10,d1
+                    and.w    #$A,d1
                     bne      XNOISE2
                     moveq    #0,d2
                     moveq    #0,d3
@@ -1630,84 +1630,84 @@ READALL:            move.l   SCREEN1,a0
                     lea      BUF12,a1
                     bsr      GRAB
                     clr.w    d1
-                    move.w   #$2B,d2
+                    move.w   #43,d2
                     lea      BUF13,a1
                     bsr      GRAB
                     move.w   #8,d1
-                    move.w   #$2B,d2
+                    move.w   #43,d2
                     lea      BUF14,a1
                     bsr      GRAB
                     clr.w    d1
-                    move.w   #$A0,d2
+                    move.w   #160,d2
                     lea      BUF1B,a1
                     bsr      GRAB
-                    move.w   #$10,d1
-                    move.w   #$52,d2
+                    move.w   #16,d1
+                    move.w   #82,d2
                     lea      BUF16,a1
                     move.w   #2,d6
-                    move.w   #$27,d7
+                    move.w   #39,d7
                     bsr      RSAVE_BUFF
                     clr.w    d1
-                    move.w   #$52,d2
+                    move.w   #82,d2
                     lea      BUF21,a1
                     bsr      GRAB
                     move.w   #8,d1
-                    move.w   #$52,d2
+                    move.w   #82,d2
                     lea      BUF22,a1
                     bsr      GRAB
                     clr.w    d1
-                    move.w   #$79,d2
+                    move.w   #121,d2
                     lea      BUF23,a1
                     bsr      GRAB
                     move.w   #8,d1
-                    move.w   #$79,d2
+                    move.w   #121,d2
                     lea      BUF24,a1
                     bsr      GRAB
                     move.w   #8,d1
-                    move.w   #$A0,d2
+                    move.w   #160,d2
                     lea      BUF2B,a1
                     bsr      GRAB
-                    move.w   #$10,d1
-                    move.w   #$79,d2
+                    move.w   #16,d1
+                    move.w   #121,d2
                     lea      BUF26,a1
                     move.w   #2,d6
-                    move.w   #$27,d7
+                    move.w   #39,d7
                     bsr      RSAVE_BUFF
                     lea      BUF31,a1
-                    move.w   #$10,d1
+                    move.w   #16,d1
                     move.w   #4,d2
                     move.w   #2,d6
-                    move.w   #$27,d7
+                    move.w   #39,d7
                     bsr      RSAVE_BUFF
-                    add.w    #$278,a1
-                    move.w   #$12,d1
+                    lea      632(a1),a1
+                    move.w   #18,d1
                     move.w   #4,d2
                     move.w   #2,d6
-                    move.w   #$27,d7
+                    move.w   #39,d7
                     bsr      RSAVE_BUFF
-                    add.w    #$278,a1
-                    move.w   #$10,d1
-                    move.w   #$2B,d2
+                    lea      632(a1),a1
+                    move.w   #16,d1
+                    move.w   #43,d2
                     move.w   #2,d6
-                    move.w   #$27,d7
+                    move.w   #39,d7
                     bsr      RSAVE_BUFF
-                    add.w    #$278,a1
-                    move.w   #$12,d1
-                    move.w   #$2B,d2
+                    lea      632(a1),a1
+                    move.w   #18,d1
+                    move.w   #43,d2
                     move.w   #2,d6
-                    move.w   #$27,d7
+                    move.w   #39,d7
                     bsr      RSAVE_BUFF
                     lea      NOSE,a1
-                    move.w   #$10,d1
-                    move.w   #$A0,d2
+                    move.w   #16,d1
+                    move.w   #160,d2
                     move.w   #2,d6
-                    move.w   #$27,d7
+                    move.w   #39,d7
                     bsr      RSAVE_BUFF
-                    add.w    #$278,a1
-                    move.w   #$12,d1
-                    move.w   #$A0,d2
+                    lea      632(a1),a1
+                    move.w   #18,d1
+                    move.w   #160,d2
                     move.w   #2,d6
-                    move.w   #$27,d7
+                    move.w   #39,d7
                     bsr      RSAVE_BUFF
                     lea      SPYPIX2,a0
                     bsr      READPIX
@@ -1721,115 +1721,115 @@ READALL:            move.l   SCREEN1,a0
                     lea      BUF18,a1
                     bsr      GRAB
                     clr.w    d1
-                    move.w   #$2B,d2
+                    move.w   #43,d2
                     lea      BUF19,a1
                     bsr      GRAB
                     move.w   #8,d1
-                    move.w   #$2B,d2
+                    move.w   #43,d2
                     lea      BUF1A,a1
                     bsr      GRAB
                     move.w   #12,d1
-                    move.w   #$2B,d2
+                    move.w   #43,d2
                     lea      BUF15,a1
                     bsr      GRAB
                     clr.w    d1
-                    move.w   #$52,d2
+                    move.w   #82,d2
                     lea      BUF27,a1
                     bsr      GRAB
                     move.w   #8,d1
-                    move.w   #$52,d2
+                    move.w   #82,d2
                     lea      BUF28,a1
                     bsr      GRAB
                     clr.w    d1
-                    move.w   #$79,d2
+                    move.w   #121,d2
                     lea      BUF29,a1
                     bsr      GRAB
                     move.w   #8,d1
-                    move.w   #$79,d2
+                    move.w   #121,d2
                     lea      BUF2A,a1
                     bsr      GRAB
                     move.w   #12,d1
-                    move.w   #$79,d2
+                    move.w   #121,d2
                     lea      BUF25,a1
                     bsr      GRAB
-                    move.w   #$52,d2
-                    move.w   #$10,d1
+                    move.w   #82,d2
+                    move.w   #16,d1
                     move.w   #2,d6
-                    move.w   #$27,d7
+                    move.w   #39,d7
                     lea      BUF1C,a1
                     bsr      RSAVE_BUFF
-                    move.w   #$79,d2
-                    move.w   #$10,d1
+                    move.w   #121,d2
+                    move.w   #16,d1
                     move.w   #2,d6
-                    move.w   #$27,d7
+                    move.w   #39,d7
                     lea      BUF2C,a1
                     bsr      RSAVE_BUFF
                     move.w   #4,d2
-                    move.w   #$10,d1
+                    move.w   #16,d1
                     move.w   #2,d6
-                    move.w   #$27,d7
+                    move.w   #39,d7
                     lea      BUF1D,a1
                     bsr      RSAVE_BUFF
                     move.w   #4,d2
-                    move.w   #$12,d1
+                    move.w   #18,d1
                     move.w   #2,d6
-                    move.w   #$27,d7
+                    move.w   #39,d7
                     lea      lbB01672C,a1
                     bsr      RSAVE_BUFF
-                    move.w   #$2B,d2
-                    move.w   #$10,d1
+                    move.w   #43,d2
+                    move.w   #16,d1
                     move.w   #2,d6
-                    move.w   #$27,d7
+                    move.w   #39,d7
                     lea      BUF2D,a1
                     bsr      RSAVE_BUFF
-                    move.w   #$2B,d2
-                    move.w   #$12,d1
+                    move.w   #43,d2
+                    move.w   #18,d1
                     move.w   #2,d6
-                    move.w   #$27,d7
+                    move.w   #39,d7
                     lea      lbB01D3CC,a1
                     bsr      RSAVE_BUFF
                     lea      GRAVE,a1
                     move.w   #8,d1
-                    move.w   #$2B,d2
+                    move.w   #43,d2
                     move.w   #2,d6
-                    move.w   #$27,d7
+                    move.w   #39,d7
                     bsr      RSAVE_BUFF
-                    add.w    #$278,a1
+                    lea      632(a1),a1
                     lea      BUBBLES,a1
                     clr.w    d1
-                    move.w   #$2B,d2
+                    move.w   #43,d2
                     move.w   #2,d6
-                    move.w   #$27,d7
+                    move.w   #39,d7
                     bsr      RSAVE_BUFF
-                    add.w    #$278,a1
+                    lea      632(a1),a1
                     clr.w    d1
-                    move.w   #$A0,d2
+                    move.w   #160,d2
                     lea      OBJS,a1
                     bsr      GRABOBJ
                     clr.w    d1
-                    move.w   #$A8,d2
+                    move.w   #168,d2
                     lea      OBJS2,a1
                     bsr      GRABOBJ
-                    move.w   #$B0,d2
+                    move.w   #176,d2
                     clr.w    d1
                     move.w   #1,d6
                     move.w   #8,d7
                     lea      MAPBOX,a1
                     bsr      RSAVE_BUFF
-                    move.w   #$B0,d2
+                    move.w   #176,d2
                     move.w   #1,d1
                     move.w   #1,d6
                     move.w   #8,d7
                     lea      MAPSPOT,a1
                     bsr      RSAVE_BUFF
-                    move.w   #$B8,d2
+                    move.w   #184,d2
                     clr.w    d1
                     move.w   #2,d6
                     move.w   #12,d7
                     lea      FIN,a1
                     bsr      RSAVE_BUFF
                     move.w   #2,d1
-                    add.l    #$278,a1
+                    lea      632(a1),a1
                     bsr      RSAVE_BUFF
                     lea      LANDPIX,a0
                     bsr      READPIX
@@ -1839,13 +1839,13 @@ READALL:            move.l   SCREEN1,a0
                     lea      LAND,a1
                     bsr      GRABLAND
                     clr.w    d1
-                    move.w   #$41,d2
+                    move.w   #65,d2
                     bsr      GRABLAND
                     clr.w    d1
-                    move.w   #$82,d2
+                    move.w   #130,d2
                     bsr      GRABLAND
                     movem.l  a0/a1,-(sp)
-                    move.w   #$82,d2
+                    move.w   #130,d2
                     moveq    #0,d1
                     lea      CLOUD_SUB,a1
                     move.w   #1,d6
@@ -1856,10 +1856,10 @@ READALL:            move.l   SCREEN1,a0
                     bsr      READPIX
                     movem.l  (sp)+,a0/a1
                     move.w   #0,d1
-                    move.w   #$40,d2
+                    move.w   #64,d2
                     bsr      GRABLAND
 VOLCANO_CUT:        move.w   #4,d6
-                    move.w   #$2D,d7
+                    move.w   #45,d7
                     move.w   #0,d1
                     move.w   #0,d2
                     lea      VOLTOP,a1
@@ -1880,76 +1880,76 @@ _RSAVE_BUFF:        bsr      RSAVE_BUFF
                     add.w    #7,d1
                     clr.w    d2
                     bsr      GRABMAP
-                    move.w   #$10,d1
-                    move.w   #$82,d2
+                    move.w   #16,d1
+                    move.w   #130,d2
                     move.w   #4,d6
-                    move.w   #$40,d7
+                    move.w   #64,d7
                     lea      ONETREE,a1
                     bsr      RSTUFF_BUFF
-                    move.w   #$10,d1
-                    move.w   #$82,d2
+                    move.w   #16,d1
+                    move.w   #130,d2
                     move.w   #3,d6
-                    move.w   #$40,d7
+                    move.w   #64,d7
                     lea      ONETREEA,a1
                     bsr      RSTUFF_BUFF
-                    move.w   #$11,d1
-                    move.w   #$82,d2
+                    move.w   #17,d1
+                    move.w   #130,d2
                     move.w   #3,d6
-                    move.w   #$40,d7
+                    move.w   #64,d7
                     lea      ONETREEB,a1
                     bsr      RSTUFF_BUFF
-                    move.w   #$10,d1
-                    move.w   #$42,d2
+                    move.w   #16,d1
+                    move.w   #66,d2
                     move.w   #4,d6
-                    move.w   #$40,d7
+                    move.w   #64,d7
                     lea      TWOTREE,a1
                     bsr      RSTUFF_BUFF
-                    move.w   #$10,d1
-                    move.w   #$42,d2
+                    move.w   #16,d1
+                    move.w   #66,d2
                     move.w   #3,d6
-                    move.w   #$40,d7
+                    move.w   #64,d7
                     lea      TWOTREEA,a1
                     bsr      RSTUFF_BUFF
-                    move.w   #$11,d1
-                    move.w   #$42,d2
+                    move.w   #17,d1
+                    move.w   #66,d2
                     move.w   #3,d6
-                    move.w   #$40,d7
+                    move.w   #64,d7
                     lea      TWOTREEB,a1
                     bsr      RSTUFF_BUFF
-                    move.w   #$10,d1
+                    move.w   #16,d1
                     move.w   #3,d2
                     move.w   #4,d6
-                    move.w   #$40,d7
+                    move.w   #64,d7
                     lea      THRTREE,a1
                     bsr      RSTUFF_BUFF
-                    move.w   #$10,d1
+                    move.w   #16,d1
                     move.w   #3,d2
                     move.w   #3,d6
-                    move.w   #$40,d7
+                    move.w   #64,d7
                     lea      THRTREEA,a1
                     bsr      RSTUFF_BUFF
-                    move.w   #$11,d1
+                    move.w   #17,d1
                     move.w   #3,d2
                     move.w   #3,d6
-                    move.w   #$40,d7
+                    move.w   #64,d7
                     lea      THRTREEB,a1
                     bsr      RSTUFF_BUFF
                     clr.w    d2
                     move.w   #14,d1
                     move.w   #1,d6
-                    move.w   #$10,d7
+                    move.w   #16,d7
                     lea      PARABUFF,a1
                     bsr      RSAVE_BUFF
-                    move.w   #$16,d2
+                    move.w   #22,d2
                     move.w   #14,d1
                     move.w   #1,d6
-                    move.w   #$10,d7
+                    move.w   #16,d7
                     lea      lbB03AD7C,a1
                     bsr      RSAVE_BUFF
                     move.w   #13,d1
-                    move.w   #$82,d2
+                    move.w   #130,d2
                     lea      RTCOVER,a1
-                    move.w   #$40,d7
+                    move.w   #64,d7
                     move.w   #2,d6
                     bsr      RSTUFF_BUFF
                     lea      BACKPIX,a0
@@ -1958,45 +1958,45 @@ _RSAVE_BUFF:        bsr      RSAVE_BUFF
                     move.w   #4,d1
                     move.w   #11,d2
                     move.w   #12,d6
-                    move.w   #$40,d7
+                    move.w   #64,d7
                     lea      VOLCANOE,a1
                     bsr      RSAVE_BUFF
                     move.w   #6,d1
-                    move.w   #$73,d2
+                    move.w   #115,d2
                     move.w   #7,d6
-                    move.w   #$37,d7
+                    move.w   #55,d7
                     lea      CONTROLS,a1
                     bsr      RSAVE_BUFF
-                    move.w   #$60,d1
-                    move.w   #$73,d2
+                    move.w   #96,d1
+                    move.w   #115,d2
                     move.w   #11,d6
-                    move.w   #$37,d7
+                    move.w   #55,d7
                     bsr      RCLEARBLOCK
                     move.w   #3,d1
-                    move.w   #$20,d2
+                    move.w   #32,d2
                     move.w   #2,d6
                     move.w   #11,d7
                     lea      ITEMON,a1
                     bsr      RSTUFF_BUFF
                     move.w   #3,d1
-                    move.w   #$36,d2
+                    move.w   #54,d2
                     move.w   #2,d6
                     move.w   #11,d7
                     lea      ITEMOFF,a1
                     bsr      RSTUFF_BUFF
                     move.w   #9,d1
-                    move.w   #$57,d2
+                    move.w   #87,d2
                     move.w   #7,d6
                     move.w   #5,d7
                     lea      STREN,a1
                     bsr      RSAVE_BUFF
                     lea      ROCKET,a1
                     move.w   #5,d1
-                    move.w   #$52,d2
+                    move.w   #82,d2
                     move.w   #2,d3
                     bsr      GRABOBJ1
                     move.w   #5,d1
-                    move.w   #$B5,d2
+                    move.w   #181,d2
                     move.w   #2,d3
                     bsr      GRABOBJ1
                     lea      SPY2PICA,a0
@@ -2005,35 +2005,35 @@ _RSAVE_BUFF:        bsr      RSAVE_BUFF
                     move.w   #12,d1
                     move.w   #1,d2
                     move.w   #4,d6
-                    move.w   #$1F,d7
+                    move.w   #31,d7
                     lea      WSUB,a1
                     bsr      RSAVE_BUFF
                     clr.w    d1
-                    move.w   #$21,d2
+                    move.w   #33,d2
                     move.w   #4,d6
-                    move.w   #$1F,d7
+                    move.w   #31,d7
                     lea      WSUB2,a1
                     bsr      RSAVE_BUFF
                     move.w   #5,d2
                     move.w   #8,d1
                     move.w   #2,d6
-                    move.w   #$27,d7
+                    move.w   #39,d7
                     lea      WOMAN,a1
                     bsr      RSAVE_BUFF
                     move.w   #5,d2
                     move.w   #10,d1
                     move.w   #2,d6
-                    move.w   #$27,d7
+                    move.w   #39,d7
                     lea      lbB039284,a1
                     bsr      RSAVE_BUFF
                     lea      BACKPIX,a0
                     bsr      READPIX
                     move.w   d7,$DFF180
                     move.l   BACK,a0
-                    move.w   #$60,d1
-                    move.w   #$73,d2
+                    move.w   #96,d1
+                    move.w   #115,d2
                     move.w   #13,d6
-                    move.w   #$35,d7
+                    move.w   #53,d7
                     bra      RCLEARBLOCK
 
 MYINT3:             addq.w   #1,FERDINAND
@@ -2122,8 +2122,8 @@ PLAYINIT2:          move.l   (a0)+,(a1)+
                     clr.w    YMIDTAIL
                     move.l   #BUF11,S1FADDR
                     move.l   #BUF21,S2FADDR
-                    move.w   #$64,S1ENERGY
-                    move.w   #$64,S2ENERGY
+                    move.w   #100,S1ENERGY
+                    move.w   #100,S2ENERGY
                     move.w   #100-1,d1
                     lea      TRAPLIST,a4
 .CLEAR:             clr.l    (a4)+
@@ -2160,13 +2160,13 @@ PLAYINIT2:          move.l   (a0)+,(a1)+
                     clr.w    S1HAND
                     clr.w    S2HAND
                     move.w   #1,d1
-                    move.w   #$1E,d2
+                    move.w   #30,d2
                     bsr      STUFFIT
                     lea      XNOSE,a1
                     lea      YNOSE,a2
                     bsr      SETXY
                     move.w   #1,d1
-                    move.w   #$16,d2
+                    move.w   #22,d2
                     bsr      STUFFIT
                     lea      XMID,a1
                     lea      YMID,a2
@@ -2178,7 +2178,7 @@ PLAYINIT2:          move.l   (a0)+,(a1)+
                     lea      YTAIL,a2
                     bsr      SETXY
                     move.w   #1,d1
-                    move.w   #$4E,d2
+                    move.w   #78,d2
                     bsr      STUFFIT
                     lea      XGUN,a1
                     lea      YGUN,a2
@@ -2192,31 +2192,31 @@ PLAYINIT2:          move.l   (a0)+,(a1)+
                     move.l   (a4),a4
                     move.l   (a4)+,a0
                     add.l    #MAP,a0
-                    move.b   #$69,(a0)
+                    move.b   #105,(a0)
                     bsr      GETA4
                     move.w   d1,XSUB
                     bsr      GETA4
                     move.w   d1,YSUB
                     bsr      GETA4
-                    move.w   #$A9,d2
+                    move.w   #169,d2
                     bsr      STUFFIT
                     bsr      GETA4
-                    move.w   #$AB,d2
+                    move.w   #171,d2
                     bsr      STUFFIT
                     bsr      GETA4
-                    move.w   #$AD,d2
+                    move.w   #173,d2
                     bsr      STUFFIT
                     bsr      GETA4
-                    move.w   #$46,d2
+                    move.w   #70,d2
                     bsr      STUFFIT
                     bsr      GETA4
-                    move.w   #$5E,d2
+                    move.w   #94,d2
                     bsr      STUFFIT
                     bsr      GETA4
-                    move.w   #$3E,d2
+                    move.w   #62,d2
                     bsr      STUFFIT
                     bsr      GETA4
-                    move.w   #$56,d2
+                    move.w   #86,d2
                     bsr      STUFFIT
                     bsr      GETA4
                     move.w   d1,S1FUEL
@@ -2268,9 +2268,9 @@ XGET_STICK:         move.w   LEVEL,d1
                     subq.w   #1,d1
                     add.w    d1,d1
                     lea      XPLANESX,a0
-                    move.w   0(a0,d1.w),XSTICK1
+                    move.w   (a0,d1.w),XSTICK1
                     lea      YPLANESY,a0
-                    move.w   0(a0,d1.w),YSTICK1
+                    move.w   (a0,d1.w),YSTICK1
                     rts
 
 XPLANESX:           dc.w     25,67,83,77,66,81,72
@@ -2627,7 +2627,7 @@ READPIX:            move.l   a0,d1
                     move.l   SCREEN2,d2
                     bsr      DECO_PIC
                     move.l   SCREEN2,a0
-                    add.w    #$80,a0
+                    lea      128(a0),a0
                     move.l   BACK,a1
                     bsr      ATARI_COPY
                     move.l   SCREEN2,a0
@@ -2947,7 +2947,7 @@ DRAWSPY:            tst.w    d0
                     sub.w    WIN1X,d2
                     add.w    d2,d2
                     add.w    d2,d2
-                    add.w    #$30,d2
+                    add.w    #48,d2
                     move.w   d2,X
                     moveq    #0,d2
                     move.w   S1MAPY,d2
@@ -2960,16 +2960,16 @@ DRAWSPY:            tst.w    d0
                     add.w    d2,d2
                     add.w    Y,d2
                     lsr.w    #1,d2
-                    add.w    #$10,d2
+                    add.w    #16,d2
                     add.w    S1SWAMP,d2
                     add.w    S1DEPTH,d2
                     sub.w    S1ALTITUDE,d2
                     move.w   d2,Y
-                    move.l   #$278,d2
+                    move.l   #632,d2
                     mulu     S1F,d2
                     add.l    S1FADDR,d2
                     move.w   #2,WIDTH
-                    move.w   #$27,d3
+                    move.w   #39,d3
                     sub.w    S1SWAMP,d3
                     sub.w    S1DEPTH,d3
                     sub.w    #2,d3
@@ -2998,7 +2998,7 @@ DRAWSPY1_2:         move.w   SPYWIN,d1
                     sub.w    WIN1X,d2
                     add.w    d2,d2
                     add.w    d2,d2
-                    add.w    #$30,d2
+                    add.w    #48,d2
                     move.w   d2,X
                     moveq    #0,d2
                     move.w   S2MAPY,d2
@@ -3011,19 +3011,19 @@ DRAWSPY1_2:         move.w   SPYWIN,d1
                     add.w    d2,d2
                     add.w    Y,d2
                     lsr.w    #1,d2
-                    add.w    #$10,d2
+                    add.w    #16,d2
                     add.w    S2SWAMP,d2
                     add.w    S2DEPTH,d2
                     sub.w    S2ALTITUDE,d2
                     move.w   d2,Y
-                    move.l   #$278,d2
+                    move.l   #632,d2
                     mulu     S2F,d2
                     add.l    S2FADDR,d2
                     move.w   #2,WIDTH
-                    move.w   #$27,d3
+                    move.w   #39,d3
                     sub.w    S2SWAMP,d3
                     sub.w    S2DEPTH,d3
-                    sub.w    #2,d3
+                    subq.w   #2,d3
                     move.w   d3,HEIGHT
                     move.l   d2,BUFFER
                     move.l   SCREEN2,SCREEN
@@ -3053,7 +3053,7 @@ DRAWSPY2_0:         move.w   SPYWIN,d1
                     sub.w    WIN2X,d2
                     add.w    d2,d2
                     add.w    d2,d2
-                    add.w    #$30,d2
+                    add.w    #48,d2
                     move.w   d2,X
                     moveq    #0,d2
                     move.w   S2MAPY,d2
@@ -3066,19 +3066,19 @@ DRAWSPY2_0:         move.w   SPYWIN,d1
                     add.w    d2,d2
                     add.w    Y,d2
                     lsr.w    #1,d2
-                    add.w    #$73,d2
+                    add.w    #115,d2
                     add.w    S2SWAMP,d2
                     add.w    S2DEPTH,d2
                     sub.w    S2ALTITUDE,d2
                     move.w   d2,Y
-                    move.l   #$278,d2
+                    move.l   #632,d2
                     mulu     S2F,d2
                     add.l    S2FADDR,d2
                     move.w   #2,WIDTH
-                    move.w   #$27,d3
+                    move.w   #39,d3
                     sub.w    S2SWAMP,d3
                     sub.w    S2DEPTH,d3
-                    sub.w    #2,d3
+                    subq.w   #2,d3
                     move.w   d3,HEIGHT
                     move.l   d2,BUFFER
                     move.l   SCREEN2,SCREEN
@@ -3104,7 +3104,7 @@ DRAWSPY2_1:         move.w   SPYWIN,d1
                     sub.w    WIN2X,d2
                     add.w    d2,d2
                     add.w    d2,d2
-                    add.w    #$30,d2
+                    add.w    #48,d2
                     move.w   d2,X
                     moveq    #0,d2
                     move.w   S1MAPY,d2
@@ -3117,16 +3117,16 @@ DRAWSPY2_1:         move.w   SPYWIN,d1
                     add.w    d2,d2
                     add.w    Y,d2
                     lsr.w    #1,d2
-                    add.w    #$73,d2
+                    add.w    #115,d2
                     add.w    S1SWAMP,d2
                     add.w    S1DEPTH,d2
                     sub.w    S1ALTITUDE,d2
                     move.w   d2,Y
-                    move.l   #$278,d2
+                    move.l   #632,d2
                     mulu     S1F,d2
                     add.l    S1FADDR,d2
                     move.w   #2,WIDTH
-                    move.w   #$27,d3
+                    move.w   #39,d3
                     sub.w    S1SWAMP,d3
                     sub.w    S1DEPTH,d3
                     subq.w   #2,d3
@@ -3161,17 +3161,17 @@ DRAWHANDS:          movem.l  d0-d3/a0,-(sp)
                     move.l   S1FADDR,d1
                     cmp.l    #BUF14,d1
                     bne      lbC003C58
-                    add.w    #7,X
-                    add.w    #$16,Y
+                    addq.w   #7,X
+                    add.w    #22,Y
                     bra      DRAWHANDS2
 
 lbC003C58:          cmp.l    #BUF13,d1
                     beq      DRAWHANDS3
-                    add.w    #$11,X
-                    add.w    #$15,Y
+                    add.w    #17,X
+                    add.w    #21,Y
                     cmp.l    #BUF12,d1
                     bne      DRAWHANDS2
-                    sub.w    #$11,X
+                    sub.w    #17,X
                     lea      OBJS2,a0
                     bra      DRAWHANDS2
 
@@ -3185,17 +3185,17 @@ DRAWHANDS1:         tst.w    S2CT
                     move.l   S2FADDR,d1
                     cmp.l    #BUF24,d1
                     bne      lbC003CDA
-                    add.w    #7,X
-                    add.w    #$16,Y
+                    addq.w   #7,X
+                    add.w    #22,Y
                     bra      DRAWHANDS2
 
 lbC003CDA:          cmp.l    #BUF23,d1
                     beq      DRAWHANDS3
-                    add.w    #$11,X
-                    add.w    #$15,Y
+                    add.w    #17,X
+                    add.w    #21,Y
                     cmp.l    #BUF22,d1
                     bne      DRAWHANDS2
-                    sub.w    #$11,X
+                    sub.w    #17,X
                     lea      OBJS2,a0
 DRAWHANDS2:         move.w   d2,d1
                     lsr.w    #3,d1
@@ -3216,13 +3216,13 @@ DRAWHANDS3:         move.w   d2,d1
                     cmp.w    #6,d1
                     bgt      DRAWHANDSEND
                     move.w   X,d2
-                    add.w    #8,d2
+                    addq.w   #8,d2
                     move.w   d2,X
                     move.w   Y,d2
-                    add.w    #$14,d2
+                    add.w    #20,d2
                     move.w   d2,Y
                     move.l   #OBJS2,BUFFER
-                    add.l    #$BD0,BUFFER
+                    add.l    #3024,BUFFER
                     move.w   #2,WIDTH
                     move.w   #8,HEIGHT
                     move.l   SCREEN2,SCREEN
@@ -3256,7 +3256,7 @@ DRAWBUTTONS1:       move.w   #$6D,d1
                     move.w   S2MENU,d4
 DRAWBUTTONS2:       move.w   COUNTER,d5
                     and.w    #1,d5
-                    move.w   #$30,d2
+                    move.w   #48,d2
                     cmp.w    #1,d4
                     bne      DRAWBUTTONS2_A
                     move.w   d5,d3
@@ -3303,8 +3303,9 @@ DRAWBUTTONS2_7:     bsr      ONEBUTTON
                     bra      DRAWBUTTONS2_9
 
 DRAWBUTTONS2_8:     move.w   #1,d3
-DRAWBUTTONS2_9:     bsr      ONEBUTTON
-                    rts
+DRAWBUTTONS2_9:     ;bsr      ONEBUTTON
+                    ;rts
+                    ; no rts
 
 ONEBUTTON:          movem.l  d0-d5/a0-a4,-(sp)
                     move.w   d1,Y
@@ -3371,11 +3372,11 @@ METER:              move.w   COUNTER,d0
                     lsr.w    #8,d3
                     cmp.w    #11,d3
                     blt      lbC003FF4
-                    cmp.w    #$15,d3
+                    cmp.w    #21,d3
                     ble      METER0_1
 lbC003FF4:          tst.w    S1ENERGY
                     blt      METER0_1
-                    cmp.w    #$64,S1ENERGY
+                    cmp.w    #100,S1ENERGY
                     beq      METER0_1
                     tst.w    S1DEAD
                     bne      METER0_1
@@ -3384,20 +3385,20 @@ lbC003FF4:          tst.w    S1ENERGY
 METER0_1:           tst.w    REFRESH
                     beq      METER1_0
                     move.w   #9,d1
-                    move.w   #$57,d2
+                    move.w   #87,d2
                     move.l   SCREEN2,a0
                     lea      STREN,a1
                     move.w   #7,d6
                     move.w   #5,d7
                     bsr      RDRAW_BUFF
                     move.w   #5-1,d0
-                    move.w   #$94,d1
+                    move.w   #148,d1
                     add.w    S1ENERGY,d1
                     move.w   d1,X
-                    move.w   #$64,d1
+                    move.w   #100,d1
                     sub.w    S1ENERGY,d1
                     move.w   d1,COUNT
-                    move.w   #$57,Y
+                    move.w   #87,Y
                     move.w   #15,COLOR
 METER1:             move.w   X,-(sp)
                     move.w   COUNT,-(sp)
@@ -3411,7 +3412,7 @@ METER1_0:           move.w   S2CT,d3
                     lsr.w    #8,d3
                     cmp.w    #11,d3
                     blt      lbC0040C2
-                    cmp.w    #$15,d3
+                    cmp.w    #21,d3
                     ble      METER1_1
 lbC0040C2:          move.w   COUNTER,d0
                     and.w    #7,d0
@@ -3419,7 +3420,7 @@ lbC0040C2:          move.w   COUNTER,d0
                     tst.w    S2ENERGY
                     blt      METER1_1
                     move.w   S2ENERGY,d0
-                    cmp.w    #$64,d0
+                    cmp.w    #100,d0
                     beq      METER1_1
                     tst.w    S2DEAD
                     bne      METER0_1
@@ -3429,21 +3430,21 @@ lbC0040C2:          move.w   COUNTER,d0
 METER1_1:           tst.w    REFRESH
                     beq      METER2_0
                     move.w   #9,d1
-                    move.w   #$BA,d2
+                    move.w   #186,d2
                     move.l   SCREEN2,a0
                     lea      STREN,a1
                     move.w   #7,d6
                     move.w   #5,d7
                     bsr      RDRAW_BUFF
                     move.w   #5-1,d0
-                    move.w   #$94,d1
+                    move.w   #148,d1
                     add.w    S2ENERGY,d1
                     move.w   d1,X
-                    move.w   #$64,d1
+                    move.w   #100,d1
                     sub.w    S2ENERGY,d1
                     move.w   d1,COUNT
                     move.w   #15,COLOR
-                    move.w   #$BA,Y
+                    move.w   #186,Y
 METER2:             move.w   X,-(sp)
                     move.w   COUNT,-(sp)
                     bsr      HLINE
@@ -3465,11 +3466,11 @@ FLASH:              move.w   #2,d6
                     tst.w    d0
                     beq      FLASH0_1
                     move.w   S1HAND,d4
-                    move.w   #$52,d2
+                    move.w   #82,d2
                     bra      FLASH0_2
 
 FLASH0_1:           move.w   S2HAND,d4
-                    move.w   #$B5,d2
+                    move.w   #181,d2
 FLASH0_2:           lsr.w    #3,d4
                     move.w   #7,d1
                     cmp.w    #3,d4
@@ -3480,12 +3481,12 @@ FLASH0_2:           lsr.w    #3,d4
                     bne      FLASH1_2
 FLASH1_1:           tst.w    d3
                     bne      FLASH1_2
-                    move.w   #$150,a1
+                    move.w   #336,a1
                     add.l    #ROCKET,a1
                     bsr      DRAWPIECE
                     bra      FLASH1_3
 
-FLASH1_2:           move.w   #$348,a1
+FLASH1_2:           move.w   #840,a1
                     add.l    #ROCKET,a1
                     bsr      DRAWPIECE
 FLASH1_3:           move.w   #6,d1
@@ -3501,12 +3502,12 @@ FLASH1_3:           move.w   #6,d1
 
 FLASH1_4:           tst.w    d3
                     bne      FLASH1_5
-                    move.w   #$A8,a1
+                    move.w   #168,a1
                     add.l    #ROCKET,a1
                     bsr      DRAWPIECE
                     bra      FLASH1_6
 
-FLASH1_5:           move.w   #$2A0,a1
+FLASH1_5:           move.w   #672,a1
                     add.l    #ROCKET,a1
                     bsr      DRAWPIECE
 FLASH1_6:           move.w   #5,d1
@@ -3524,7 +3525,7 @@ FLASH1_7:           tst.w    d3
                     bsr      DRAWPIECE
                     bra      FLASH1_9
 
-FLASH1_8:           move.w   #$1F8,a1
+FLASH1_8:           move.w   #504,a1
                     add.l    #ROCKET,a1
                     bsr      DRAWPIECE
 FLASH1_9:           rts
@@ -3546,30 +3547,30 @@ DRAWSEL1:           move.l   SCREEN2,a0
                     clr.w    d3
 DRAWSEL1_0:         cmp.w    #1,d3
                     beq      DRAWSEL2
-                    move.w   #$22,d1
+                    move.w   #34,d1
                     add.w    PLAYERS,d1
-                    move.w   #$49,d2
+                    move.w   #73,d2
                     move.w   #10,d0
                     bsr      PUTCHAR
 DRAWSEL2:           cmp.w    #2,d3
                     beq      DRAWSEL3
-                    move.w   #$20,d1
+                    move.w   #32,d1
                     add.w    LEVEL,d1
-                    move.w   #$59,d2
+                    move.w   #89,d2
                     move.w   #10,d0
                     bsr      PUTCHAR
 DRAWSEL3:           cmp.w    #3,d3
                     beq      DRAWSEL4
-                    move.w   #$21,d1
+                    move.w   #33,d1
                     add.w    IQ,d1
-                    move.w   #$71,d2
+                    move.w   #113,d2
                     move.w   #10,d0
                     bsr      PUTCHAR
 DRAWSEL4:           cmp.w    #4,d3
                     beq      DRAWSEL5
-                    move.w   #$23,d1
+                    move.w   #35,d1
                     add.w    DRAWSUB,d1
-                    move.w   #$89,d2
+                    move.w   #137,d2
                     move.w   #10,d0
                     bsr      PUTCHAR
 DRAWSEL5:           movem.l  (sp)+,d0-d3
@@ -3583,7 +3584,7 @@ COMPARETWICE:       cmp.w    (a6),d0
                     rts
 
 lbC00437A:          move.w   d0,(a6)
-                    cmp.w    #$FFFE,d0
+                    cmp.w    #-2,d0
                     rts
 
 RSPRITER:           movem.l  d0-d7/a0-a2,-(sp)
@@ -3971,6 +3972,7 @@ lbC0047DA:          move.b   (a1)+,(a0)
                     movem.l  (sp)+,d1/a0/a1
                     rts
 
+; plane 1,plane 2,plane 3,plane 4
 FONT:               dc.b     %11111101,%00111110,%00111100,%00111100
                     dc.b     %11111110,%01111111,%01111110,%01111110
                     dc.b     %11101110,%01110111,%01100110,%01100110
@@ -4166,10 +4168,10 @@ lbC004A26:          addq.w   #1,d5
                     divu     d0,d5
                     and.l    #$FFFF,d5
                     lsl.l    #8,d5
-SETUPCOLOUR:        move.w   #0,d1
-                    move.w   #0,d2
-                    move.w   #0,d3
-                    move.w   #0,d4
+SETUPCOLOUR:        clr.w    d1
+                    clr.w    d2
+                    clr.w    d3
+                    clr.w    d4
                     ror.w    #1,d7
                     bcc      lbC004A4E
                     move.w   d6,d1
@@ -4438,9 +4440,9 @@ MOVE:               move.l   d0,-(sp)
                     move.w   #$45,d0
                     bsr      INKEY
                     beq      NO_DEMO
-OUT_DEMO:           cmp.w    #$28,DEMO
+OUT_DEMO:           cmp.w    #40,DEMO
                     blt      NO_DEMO
-                    move.w   #$28,DEMO
+                    move.w   #40,DEMO
 NO_DEMO:            move.l   (sp)+,d0
                     tst.w    d0
                     bne      lbC004DC2
@@ -5476,7 +5478,7 @@ GETWINDOW2:         move.w   SPYWX,WIN2X
 
 LITTLE_DELAY:       move.w   d0,-(sp)
                     move.w   #56001-1,d0
-lbC005DFC:          dbra     d0,lbC005DFC
+.WAIT:              dbra     d0,.WAIT
                     move.w   (sp)+,d0
                     rts
 
@@ -5509,7 +5511,7 @@ DRAWMOVE0:          cmp.w    #2,SPYWIN
                     bsr      DRAWOBJ
 NOLAND:             bra      DRAWMOVE1
 
-DRAWMOVE0_1:        move.w   #$1BE,a0
+DRAWMOVE0_1:        move.w   #446,a0
                     bsr      CLEAR_WINDOW
                     bsr      DRAWLAND5_2
 DRAWMOVE1:          move.w   #1,d0
@@ -5530,7 +5532,7 @@ DRAWMOVE2:          cmp.w    #1,SPYWIN
                     bsr      DRAWOBJ
 NOLAND2:            bra      DRAWMOVE3
 
-DRAWMOVE2_1:        move.w   #$1136,a0
+DRAWMOVE2_1:        move.w   #4406,a0
                     bsr      CLEAR_WINDOW
                     bsr      DRAWLAND5_2
 DRAWMOVE3:          bsr      DRAWBUTTONS
@@ -5575,7 +5577,7 @@ DRAWLAND:           tst.w    d0
                     move.w   WIN1Y,d3
                     move.w   BUF1X,d4
                     move.w   BUF1Y,d5
-                    move.w   #$32,ULX
+                    move.w   #50,ULX
                     move.w   #11,ULY
                     move.w   d2,BUF1X
                     move.w   d3,BUF1Y
@@ -5588,8 +5590,8 @@ DRAWLAND0_0:        move.l   S2FADDR,d1
                     move.w   WIN2Y,d3
                     move.w   BUF2X,d4
                     move.w   BUF2Y,d5
-                    move.w   #$32,ULX
-                    move.w   #$6E,ULY
+                    move.w   #50,ULX
+                    move.w   #110,ULY
                     move.w   d2,BUF2X
                     move.w   d3,BUF2Y
 DRAWLAND0_1:        movem.l  d0-d5,-(sp)
@@ -6144,25 +6146,25 @@ lbC006828:          move.w   d1,d2
                     beq      BUSY14_0
                     cmp.w    #15,d2
                     beq      BUSY15_0
-                    cmp.w    #$10,d2
+                    cmp.w    #16,d2
                     beq      BUSY16_0
-                    cmp.w    #$11,d2
+                    cmp.w    #17,d2
                     beq      BUSY17_0
-                    cmp.w    #$12,d2
+                    cmp.w    #18,d2
                     beq      BUSY18_0
-                    cmp.w    #$13,d2
+                    cmp.w    #19,d2
                     beq      BUSY19_0
-                    cmp.w    #$14,d2
+                    cmp.w    #20,d2
                     beq      BUSY20_0
-                    cmp.w    #$15,d2
+                    cmp.w    #21,d2
                     beq      BUSY21_0
-                    cmp.w    #$16,d2
+                    cmp.w    #22,d2
                     beq      BUSY22
-                    cmp.w    #$40,d2
+                    cmp.w    #64,d2
                     beq      BUSY40_0
-                    cmp.w    #$41,d2
+                    cmp.w    #65,d2
                     beq      BUSY41_0
-                    cmp.w    #$24,d2
+                    cmp.w    #36,d2
                     beq      BUSY36
                     rts
 
